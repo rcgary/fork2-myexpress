@@ -29,8 +29,8 @@ module.exports = function(){
             res.statusCode = 404;
             res.setHeader('Content-Type', 'text/html');
             res.end("404 - Not Found");
-            return;
           }
+          return;
         }
         try {
           var arity = layer.length;
