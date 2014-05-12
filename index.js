@@ -1,4 +1,5 @@
 var http = require('http');
+var Layer = require("./lib/layer");
 
 module.exports = function(){
   function express(req,res,next){
@@ -10,9 +11,16 @@ module.exports = function(){
   }
 
   express.stack = [];
-  express.use = function(callback){
-    this.stack.push(callback);
+
+  express.use = function(path,middleware){
+    if (typeof path != 'string') {
+      middleware = path;
+      path = '/';
+    }
+    var layer = new Layer(path,middleware);
+    this.stack.push(layer);
   }
+
   express.handle = function(req,res,out){
     var index = 0;
     var stack = this.stack;
@@ -33,15 +41,16 @@ module.exports = function(){
           return;
         }
         try {
-          var arity = layer.length;
+          if (! layer.match(req.url)) return next(error);
+          var arity = layer.handle.length;
           if (error) {
             if (arity == 4) {
-              layer(error, req, res, next);
+              layer.handle(error, req, res, next);
             } else {
               next(error);
             }
           } else if (arity < 4) {
-            layer(req, res, next);
+            layer.handle(req, res, next);
           } else {
             next();
           }
