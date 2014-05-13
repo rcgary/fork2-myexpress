@@ -41,7 +41,10 @@ module.exports = function(){
           return;
         }
         try {
-          if (! layer.match(req.url)) return next(error);
+          req.params = {};
+          var matchResult = layer.match(req.url);
+          if (!matchResult) return next(error);
+          req.params = matchResult.params;
           var arity = layer.handle.length;
           if (error) {
             if (arity == 4) {
