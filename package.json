@@ -15,5 +15,8 @@
     "chai": "^1.9.1",
     "mocha": "^1.18.2",
     "supertest": "^0.12.0"
+  },
+  "dependencies": {
+    "methods": "^0.1.0"
   }
 }

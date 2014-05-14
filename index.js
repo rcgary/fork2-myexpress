@@ -1,5 +1,7 @@
 var http = require('http');
+var methods = require('methods');
 var Layer = require("./lib/layer");
+var makeRoute = require("./lib/route");
 
 module.exports = function(){
   function express(req,res,next){
@@ -12,12 +14,13 @@ module.exports = function(){
 
   express.stack = [];
 
-  express.use = function(path,middleware){
+  express.use = function(path,middleware,prefix){
     if (typeof path != 'string') {
       middleware = path;
       path = '/';
     }
-    var layer = new Layer(path,middleware);
+    prefix = prefix || false;
+    var layer = new Layer(path,middleware,prefix);
     this.stack.push(layer);
   }
 
@@ -63,5 +66,12 @@ module.exports = function(){
     }
     next();
   }
+
+  methods.forEach(function(method){
+    express[method] = function(path,middleware){
+      middleware = makeRoute(method,middleware);
+      express.use(path,middleware,true);
+    }
+  });
   return express;
 }
