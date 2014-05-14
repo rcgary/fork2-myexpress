@@ -5,3 +5,4 @@ fork2-myexpress
 2. [Building The Middlewares Stack](https://gist.github.com/rcgary/e75a700631162edcfc59)
 3. [Simple Request Path Matcher](https://gist.github.com/rcgary/c113d7711cd337d15840)
 4. [Fancy Request Path Matcher](https://gist.github.com/rcgary/48afc4883a38a170bb6d)
+5. [HTTP Verbs](https://gist.github.com/rcgary/ca8467f00c9cf3a48320)
